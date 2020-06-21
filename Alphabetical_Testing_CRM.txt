@@ -1,0 +1,221 @@
+Sub clearcontents()
+
+    Dim sheets_count As Integer
+
+    sheets_count = ActiveWorkbook.Worksheets.count
+    
+    For i = 1 To sheets_count
+        Worksheets(i).Range("I:S").clear
+    Next i
+    
+End Sub
+
+Sub stocks_alpha_testing()
+
+    'Worksheet Total
+    Dim sheets_count As Integer
+
+    sheets_count = ActiveWorkbook.Worksheets.count
+    
+    'Find Last Row
+    Dim last_row As Long
+        
+    'Table
+    Dim STR As Integer
+    
+    'Variable Declarations
+    Dim ticker_symbol As String
+    
+    Dim year_begin As Double
+    
+    Dim year_end As Double
+    
+    Dim yearly_change As Double
+    
+    Dim percent_change As Double
+    
+    Dim total_stock_volume As Double
+    
+    Dim positive_change As Double
+    
+    Dim negative_change As Double
+    
+    Dim greatest_percent_increase As Double
+    
+    Dim greatest_percent_decrease As Double
+    
+    Dim greatest_total_volume As Double
+    
+    total_stock_volume = 0
+    
+    greatest_percent_increase = 0
+    
+    greatest_percent_decrease = 0
+    
+    greatest_total_volume = 0
+        
+    '---------------------------------------------------
+    Debug.Print "sheets_count:", sheets_count
+    
+    For i = 1 To sheets_count
+        
+        'MsgBox ActiveWorkbook.Worksheets(i).Name
+        
+        'Activate Sheet
+        Worksheets(i).Activate
+        
+        last_row = Cells(Rows.count, "B").End(xlUp).Row
+        
+        'Enter Headings
+        Cells(1, 9).Value = "Ticker"
+    
+        Cells(1, 10).Value = "Yearly Change"
+    
+        Cells(1, 11).Value = "Percent Change"
+    
+        Cells(1, 12).Value = "Total Stock Volume"
+    
+        Cells(1, 13).Value = "Year Begin"
+    
+        Cells(1, 14).Value = "Year End"
+    
+        Cells(1, 17).Value = "Ticker Symbol"
+    
+        Cells(1, 18).Value = "Value"
+    
+        Cells(2, 16).Value = "Greatest Percent Increase"
+    
+        Cells(3, 16).Value = "Greatest Percent Decrease"
+    
+        Cells(4, 16).Value = "Greatest Total Volume"
+        
+        Range("R2").NumberFormat = "0.00%"
+            
+        Range("R3").NumberFormat = "0.00%"
+        
+        'Set Table
+        STR = 2
+        
+        Dim ticker_count As Long
+
+        ticker_count = 0
+        
+        For j = 2 To last_row
+        
+            If Cells(j, 1).Value <> Cells(j + 1, 1).Value Then
+        
+                ticker = Cells(j, 1).Value
+                
+                Range("I" & STR).Value = ticker
+        
+                year_end = Cells(j, 6).Value
+        
+                year_begin = Cells(j - ticker_count, 3).Value
+        
+                yearly_change = year_end - year_begin
+                
+                Range("M" & STR).Value = year_begin
+                    
+                Range("N" & STR).Value = year_end
+                    
+                Range("J" & STR).Value = yearly_change
+                        
+                'help me!
+                
+                'Populate & Highlight Percent Change
+                If year_begin > 0 Then
+                
+                    percent_change = yearly_change / year_begin
+                
+                End If
+                
+                Range("K" & STR).Value = percent_change
+                
+                If percent_change >= 0 Then
+                
+                    Range("K" & STR).Interior.Color = RGB(0, 255, 0)
+                
+                Else
+                
+                    Range("K" & STR).Interior.Color = RGB(255, 0, 0)
+                    
+                End If
+                              
+                Range("L" & STR).Value = total_stock_volume
+        
+                'Fuck Off
+                
+                
+                'kill me please shoot me and toss me off a cliff
+                
+                STR = STR + 1
+                
+                ticker_count = 0
+                
+                total_stock_volume = 0
+                
+            Else
+            
+                total_stock_volume = total_stock_volume + Cells(j, 7).Value
+            
+                ticker_count = ticker_count + 1
+                
+            End If
+        
+        Next j
+
+    Next i
+    
+    'Worksheets("A").Activate
+    
+     For i = 1 To sheets_count
+        
+        'Activate Sheet
+        Worksheets(i).Activate
+        
+        last_row = Cells(Rows.count, "I").End(xlUp).Row
+        
+        greatest_percent_increase = 0
+        
+        greatest_percent_decrease = 0
+        
+        greatest_total_volume = 0
+        
+        For j = 2 To last_row
+    
+            If Range("K" & j).Value > greatest_percent_increase Then
+                        
+                greatest_percent_increase = Range("K" & j).Value
+                        
+                Range("R2").Value = greatest_percent_increase
+                        
+                Range("Q2").Value = Range("I" & j).Value
+                        
+            End If
+                    
+            If Range("K" & j).Value < greatest_percent_decrease Then
+                        
+                greatest_percent_decrease = Range("K" & j).Value
+                        
+                Range("R3").Value = greatest_percent_decrease
+                        
+                Range("Q3").Value = Range("I" & j).Value
+                        
+            End If
+                    
+            If Range("L" & j).Value > greatest_total_volume Then
+                        
+                greatest_total_volume = Range("L" & j).Value
+                        
+                Range("R4").Value = greatest_total_volume
+                        
+                Range("Q4").Value = Range("I" & j).Value
+                        
+            End If
+                
+        Next j
+        
+    Next i
+        
+End Sub
+
