@@ -119,8 +119,6 @@ Sub stocks_alpha_testing()
                 Range("N" & STR).Value = year_end
                     
                 Range("J" & STR).Value = yearly_change
-                        
-                'help me!
                 
                 'Populate & Highlight Percent Change
                 If year_begin > 0 Then
@@ -142,11 +140,6 @@ Sub stocks_alpha_testing()
                 End If
                               
                 Range("L" & STR).Value = total_stock_volume
-        
-                'Fuck Off
-                
-                
-                'kill me please shoot me and toss me off a cliff
                 
                 STR = STR + 1
                 
